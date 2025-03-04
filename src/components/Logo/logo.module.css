@@ -1,0 +1,17 @@
+.logo {
+  display: flex;
+
+  .logo__text {
+    font-size: 1.5rem;
+    color: white;
+    font-weight: 700;
+  }
+}
+
+@media (min-width: 768px) {
+  .logo {
+    .logo__text {
+      font-size: 2rem;
+    }
+  }
+}
