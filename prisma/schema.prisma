@@ -9,3 +9,13 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Purchase {
+  id             Int      @id @default(autoincrement())
+  responsible    String
+  amount         Float
+  description    String
+  status         Boolean  @default(false)
+  installments   Int
+  dateOfPurchase DateTime
+}
