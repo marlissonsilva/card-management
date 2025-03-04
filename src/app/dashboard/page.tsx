@@ -3,7 +3,8 @@ import { IconPlus } from '@tabler/icons-react'
 
 import styles from './page.module.css'
 import { useRouter } from 'next/navigation'
-import { Button } from '../components/ui/button'
+import { Button } from '@/components/ui/button'
+
 
 export default function Dashboard() {
   const route = useRouter()
