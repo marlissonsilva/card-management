@@ -2,10 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { IconArrowRight } from '@tabler/icons-react'
 
-import { Button } from '@/components/ui/button'
-import { Header } from '@/components/Header'
-
 import styles from './page.module.css'
+import { Button } from './components/ui/button'
+import { Header } from './components/Header'
 
 export default function Home() {
   return (

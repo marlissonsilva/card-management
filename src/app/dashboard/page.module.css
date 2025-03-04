@@ -1,0 +1,16 @@
+.menu {
+  width: 98%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.content {
+  background-color: orange;
+  height: 100%;
+  width: 98%;
+  margin: 20px auto;
+  border-radius: 10px;
+}
