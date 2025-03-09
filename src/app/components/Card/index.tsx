@@ -18,7 +18,6 @@ interface CheckboxTransactionItemProps {
 export default function CheckboxTransactionItem({
   responsible,
   amount,
-  description,
   status = false,
   installments,
   dateOfPurchase,

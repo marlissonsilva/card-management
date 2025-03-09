@@ -1,7 +1,6 @@
 'use client'
 
 import { Button as ButtonSc } from '@/components/ui/button'
-import styles from './button.module.css'
 import { ButtonProps } from './types'
 import { useRouter } from 'next/navigation'
 export function Button({ children, url }: ButtonProps) {
