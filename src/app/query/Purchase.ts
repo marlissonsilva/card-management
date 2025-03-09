@@ -10,3 +10,8 @@ export async function createPurchase(data: Purchase) {
     return true
   }
 }
+
+export async function listPurchases() {
+  const result = await prisma.purchase.findMany()
+  return result 
+}

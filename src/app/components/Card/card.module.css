@@ -1,0 +1,60 @@
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  gap: 1rem;
+  color: #777;
+}
+
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #4caf50;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.checkbox[aria-checked='true'] {
+  background: #4caf50;
+}
+
+.infos {
+  flex-grow: 1;
+}
+
+.infos h3 {
+  font-size: 1rem;
+  margin: 0;
+  color: #333;
+}
+
+.date {
+  font-size: 0.85rem;
+  color: #777;
+  margin-right: 15px;
+}
+
+.amount {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #4caf50;
+  text-align: right;
+}
+
+.amount span:last-child {
+  font-size: 0.85rem;
+  color: #777;
+}
