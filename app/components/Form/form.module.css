@@ -1,0 +1,73 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 10px;
+  background-color: white;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 600;
+  padding: 30px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 500px;
+  width: 100%;
+  gap: 10px;
+
+  & .input {
+    width: 100%;
+  }
+}
+
+.containerAmount {
+  position: relative;
+
+  & > input {
+    width: 100%;
+    padding: 8px 40px;
+    border: 1px solid black;
+    border-radius: 10px;
+  }
+}
+
+.inputDate {
+  width: 100%;
+  padding: 20px;
+}
+
+.containerAmout {
+  position: relative;
+
+  & .iconCurrency {
+    position: absolute;
+    top: 8px;
+    left: 5px;
+  }
+
+  .inputAmount {
+    padding-left: 30px;
+  }
+}
+
+.iconCalendar {
+  margin-left: auto;
+  opacity: 0.5;
+}
+
+.warn {
+  font-size: 12px;
+  color: rgb(235, 18, 18);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 10px 10px;
+  }
+}
