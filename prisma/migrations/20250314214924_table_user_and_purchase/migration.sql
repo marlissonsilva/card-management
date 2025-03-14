@@ -18,7 +18,7 @@ CREATE TABLE "Purchase" (
     "description" TEXT NOT NULL,
     "status" BOOLEAN NOT NULL DEFAULT false,
     "dateOfPurchase" TIMESTAMP(3) NOT NULL,
-    "installtments" INTEGER NOT NULL,
+    "installments" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

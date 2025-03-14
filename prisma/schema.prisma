@@ -29,7 +29,7 @@ model Purchase {
   description    String
   status         Boolean  @default(false)
   dateOfPurchase DateTime
-  installtments  Int
+  installments   Int
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
