@@ -6,7 +6,7 @@ import { prisma } from './prisma'
 
 const FormSchema = z.object({
   id: z.string(),
-  responsible: z.string().min(3, 'Nome deve ter pelo menos 2 caracteres'),
+  responsible: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
   amount: z.coerce
     .number()
     .gt(0, { message: 'Valor tem que ser maior que R$: 0,00.' }),
@@ -14,8 +14,14 @@ const FormSchema = z.object({
   dateOfPurchase: z
     .string()
     .transform((val) => new Date(val))
-    .refine((date) => !isNaN(date.getTime()), { message: 'Data inválida' }),
-  installments: z.number()
+    .refine((date) => !isNaN(date.getTime()), {
+      message: 'Selecione uma data válida'
+    }),
+  installments: z.coerce
+    .number()
+    .int()
+    .min(1, 'Parcelas devem ser maior que 0')
+    .max(12, 'Parcelas devem ser menor que 12')
 })
 
 export type State = {
@@ -35,22 +41,13 @@ export async function createPurchase(
   state: State,
   formData: FormData
 ): Promise<State> {
-  const rawAmount = formData.get('amount') as string
-  const normalizedAmount =
-    parseFloat(rawAmount.replace(/\./g, '').replace(',', '.')) || 0
-
-  const rawInstallments = formData.get('installments') as string
-  const normalizedInstallments = Number(rawInstallments) || 0
-
   const validatedFields = CreatePurchase.safeParse({
     responsible: formData.get('responsible'),
-    amount: normalizedAmount,
+    amount: formData.get('amount'),
     description: formData.get('description'),
     dateOfPurchase: formData.get('dateOfPurchase'),
-    installments: normalizedInstallments
+    installments: formData.get('installments')
   })
-
-  console.log('Validated Fields', validatedFields)
 
   if (!validatedFields.success) {
     console.log(validatedFields.error.flatten().fieldErrors)
@@ -60,16 +57,18 @@ export async function createPurchase(
     }
   }
 
-  const result = await prisma.purchase.create({
-    data: {
-      ...validatedFields.data,
-      amount: normalizedAmount,
-      installments: normalizedInstallments
+  try {
+    await prisma.purchase.create({
+      data: {
+        ...validatedFields.data
+      }
+    })
+  } catch (error) {
+    return {
+      message: `Database error: Falha ao criar compra.${error}`
     }
-  })
-
-  console.log('Result', result)
+  }
 
   revalidatePath('/dashboard/')
-  redirect('/dashboard/register')
+  redirect('/dashboard/')
 }

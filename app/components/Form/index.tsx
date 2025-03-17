@@ -15,8 +15,9 @@ import {
   SelectValue,
   SelectItem
 } from '@/app/ui/select'
-import { useActionState, useState } from 'react'
+import { useActionState, useState, startTransition } from 'react'
 import { createPurchase, State } from '@/app/lib/actions'
+import { formatCurrency } from '@/app/lib/utils'
 export default function Form() {
   const initialState: State = { message: undefined, errors: {} }
   const [state, formAction] = useActionState(createPurchase, initialState)
@@ -25,13 +26,33 @@ export default function Form() {
   const [selected, setSelected] = useState('')
   const [displayAmount, setDisplayAmount] = useState('')
 
-  const formatCurrency = (value: string) => {
-    const numericValue = value.replace(/\D/g, '')
-    const numberValue = Number(numericValue) / 100 || 0
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
 
-    return numberValue.toLocaleString('pt-BR', {
-      currency: 'BRL',
-      minimumFractionDigits: 2
+    // Formatar valores antes de enviar
+    const rawAmount = formData.get('amount') as string
+    const formattedAmount =
+      parseFloat(rawAmount.replace(/\./g, '').replace(',', '.')) || 0
+
+    const rawDate = formData.get('dateOfPurchase') as string
+    const formattedDate = rawDate ? new Date(rawDate).toISOString() : null
+
+    const rawInstallments = formData.get('installments') as string
+    const formattedInstallments = Number(rawInstallments) || 0
+
+    // Criar um novo FormData e adicionar os valores formatados
+    const formattedFormData = new FormData()
+    formData.forEach((value, key) => {
+      formattedFormData.append(key, value)
+    })
+
+    formattedFormData.set('amount', formattedAmount.toString())
+    formattedFormData.set('dateOfPurchase', formattedDate || '')
+    formattedFormData.set('installments', formattedInstallments.toString())
+
+    startTransition(() => {
+      formAction(formattedFormData)
     })
   }
 
@@ -43,7 +64,7 @@ export default function Form() {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Nova Compra</h2>
-      <form action={formAction} className={styles.form}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <Label htmlFor="responsible">Responsável pela compra</Label>
         <Input
           className={styles.input}
@@ -51,6 +72,19 @@ export default function Form() {
           name="responsible"
           placeholder="Ex: Fulano da Silva"
         />
+        <div
+          className={styles.error_container}
+          id="responsible-error"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {state.errors?.responsible &&
+            state.errors.responsible.map((error: string) => (
+              <p className={styles.message_error} key={error}>
+                {error}
+              </p>
+            ))}
+        </div>
         <Label htmlFor="amount">Valor</Label>
         <div className={styles.containerAmout}>
           <IconCurrencyReal size={20} className={styles.iconCurrency} />
@@ -63,11 +97,19 @@ export default function Form() {
             onChange={handleAmountChange}
           />
         </div>
-        <input
-          type="hidden"
-          name="amount"
-          value={displayAmount.replace(/\./g, '').replace(',', '.') || '0.00'}
-        />
+        <div
+          className={styles.error_container}
+          id="amount-error"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {state.errors?.amount &&
+            state.errors.amount.map((error: string) => (
+              <p className={styles.message_error} key={error}>
+                {error}
+              </p>
+            ))}
+        </div>
 
         <Label htmlFor="description">Breve descrição</Label>
         <Input
@@ -75,6 +117,19 @@ export default function Form() {
           name="description"
           placeholder="Descrição da compra..."
         />
+        <div
+          className={styles.error_container}
+          id="description-error"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {state.errors?.description &&
+            state.errors.description.map((error: string) => (
+              <p className={styles.message_error} key={error}>
+                {error}
+              </p>
+            ))}
+        </div>
 
         <Label htmlFor="dateOfPurchase">Data da compra</Label>
         <div className={styles.input}>
@@ -104,6 +159,19 @@ export default function Form() {
             value={date ? format(date, 'yyyy-MM-dd') : ''}
           />
         </div>
+        <div
+          className={styles.error_container}
+          id="dateOfPurchase-error"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {state.errors?.dateOfPurchase &&
+            state.errors.dateOfPurchase.map((error: string) => (
+              <p className={styles.message_error} key={error}>
+                {error}
+              </p>
+            ))}
+        </div>
 
         <Label htmlFor="installments">Parcelas</Label>
         <Select
@@ -125,6 +193,29 @@ export default function Form() {
             ))}
           </SelectContent>
         </Select>
+        <div
+          className={styles.error_container}
+          id="installments-error"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {state.errors?.installments &&
+            state.errors.installments.map((error: string) => (
+              <p className={styles.message_error} key={error}>
+                {error}
+              </p>
+            ))}
+        </div>
+        {/* <div
+          className={styles.error_container}
+          id="form-error"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {state.errors && (
+            <p className={styles.message_error}>{state.message}</p>
+          )}
+        </div> */}
         <Button type="submit">Cadastrar Compra</Button>
       </form>
     </div>
