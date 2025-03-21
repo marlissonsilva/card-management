@@ -1,6 +1,7 @@
 import { Header } from '../components/Header'
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
 import styles from './page.module.css'
+import { Menu } from '../components/Menu'
 
 export default function DashoboardLayout({
   children
@@ -19,6 +20,7 @@ export default function DashoboardLayout({
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </Header>
+      <Menu />
       <main>{children}</main>
     </main>
   )
