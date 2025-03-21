@@ -1,0 +1,35 @@
+.card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  max-width: 600px;
+  display: inline-block;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+.card_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.checkbox {
+  width: 1.3em;
+  height: 1.3em;
+  border-radius: 50%;
+  border: 1px solid #b3afaf;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.checkbox:checked {
+  background-color: rgb(5, 155, 37);
+}
+
+.amount {
+  font-size: 20px;
+  font-weight: bold;
+}

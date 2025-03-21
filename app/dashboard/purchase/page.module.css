@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  background-color: white;
+  gap: .8rem;
+}
+
+.wrapper{
+  display: flex;
+  gap: 10px;
+}
