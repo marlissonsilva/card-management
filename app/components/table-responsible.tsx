@@ -1,5 +1,6 @@
 import { getResponsibles } from '../lib/actions'
 import Search from './search'
+import formatCurrency from '../lib/utils'
 
 export default async function ResponsibleTable({}) {
   const responsibles = await getResponsibles()
@@ -29,15 +30,15 @@ export default async function ResponsibleTable({}) {
                     <div className="flex w-full items-center justify-between border-b py-5">
                       <div className="flex w-1/2 flex-col">
                         <p className="text-xs">Pendente</p>
-                        <p className="font-medium">{/* {responsible} */}</p>
+                        <p className="font-medium">{formatCurrency(responsible.totalPending)}</p>
                       </div>
                       <div className="flex w-1/2 flex-col">
                         <p className="text-xs">Pago</p>
-                        {/* <p className="font-medium">{responsible.total_paid}</p> */}
+                        <p className="font-medium">{formatCurrency(responsible.totalPaid)}</p>
                       </div>
                     </div>
                     <div className="pt-4 text-sm">
-                      {/* <p>{responsible.total_invoices} invoices</p> */}
+                      <p>{responsible.totalPurchases} compras</p>
                     </div>
                   </div>
                 ))}
@@ -69,13 +70,13 @@ export default async function ResponsibleTable({}) {
                         </div>
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {/* {responsible.total_invoices} */}
+                        {responsible.totalPurchases}
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {/* {responsible.total_pending} */}
+                        {formatCurrency(responsible.totalPending)}
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm group-first-of-type:rounded-md group-last-of-type:rounded-md">
-                        {/* {responsible.total_paid} */}
+                        {formatCurrency(responsible.totalPaid)}
                       </td>
                     </tr>
                   ))}

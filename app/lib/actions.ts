@@ -169,9 +169,38 @@ export async function fetchPurchasePages(query: string) {
 }
 
 export async function getResponsibles() {
-  return await prisma.purchase.findMany({
+  const responsibles = await prisma.purchase.findMany({
     distinct: ['responsible']
   })
+
+  const responsibleTotals = await Promise.all(
+    responsibles.map(async (responsible) => {
+      const purchases = await prisma.purchase.findMany({
+        where: {
+          responsible: responsible.responsible
+        }
+      })
+
+      const totalPurchases = purchases.length
+      const totalAmount = purchases.reduce((sum, purchase) => sum + purchase.amount, 0)
+      const totalPending = purchases
+        .filter(purchase => !purchase.status)
+        .reduce((sum, purchase) => sum + purchase.amount, 0)
+      const totalPaid = purchases
+        .filter(purchase => purchase.status)
+        .reduce((sum, purchase) => sum + purchase.amount, 0)
+
+      return {
+        ...responsible,
+        totalPurchases,
+        totalAmount,
+        totalPending,
+        totalPaid
+      }
+    })
+  )
+
+  return responsibleTotals
 }
 
 export async function deletePurchase(id: string) {
