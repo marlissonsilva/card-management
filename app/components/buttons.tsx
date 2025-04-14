@@ -1,3 +1,5 @@
+'use client'
+
 import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react'
 import Link from 'next/link'
 import { deletePurchase } from '@/app/lib/actions'
@@ -26,15 +28,22 @@ export function UpdatePurchase({ id }: { id: string }) {
 }
 
 export function DeletePurchase({ id }: { id: string }) {
-  async function deletePurchaseWithId() {
-    await deletePurchase(id);
-  }
+  const deletePurchaseWithId = deletePurchase.bind(null, id);
+  
   return (
-    <form action={deletePurchaseWithId}>
-      <button type="submit" className="rounded-md border p-2 hover:bg-gray-100">
-        <span className="sr-only">Delete</span>
-        <IconTrash className="w-5" />
-      </button>
-    </form>
+    <button 
+      onClick={async () => {
+        try {
+          await deletePurchaseWithId();
+          window.location.reload();
+        } catch (error) {
+          console.error('Failed to delete purchase:', error);
+        }
+      }}
+      className="rounded-md border p-2 hover:bg-gray-100"
+    >
+      <span className="sr-only">Delete</span>
+      <IconTrash className="w-5" />
+    </button>
   )
 }

@@ -16,12 +16,8 @@ import {
   SelectValue,
   SelectItem
 } from '@/app/components/ui/select'
-import {
-  useActionState,
-  useState,
-  startTransition,
-} from 'react'
-import { State, updatePurchase } from '@/app/lib/actions'
+import { useActionState, useState, startTransition } from 'react'
+import { State, updatePurchase, deletePurchase } from '@/app/lib/actions'
 import { Calendar } from './ui/calendar'
 import { Button } from './ui/button'
 
@@ -34,16 +30,25 @@ interface Purchase {
   installments: number
 }
 
-
 export default function FormEdit({
-  purchases,
+  purchases
 }: {
   purchases: Purchase
   responsible: Purchase[]
 }) {
   const initialState: State = { message: undefined, errors: {} }
   const updatePurchaseById = updatePurchase.bind(null, purchases.id)
+  const deletePurchaseWithId = deletePurchase.bind(null, purchases.id)
   const [state, formAction] = useActionState(updatePurchaseById, initialState)
+
+  const handleDelete = async () => {
+    try {
+      await deletePurchaseWithId()
+      window.location.href = '/dashboard/compras'
+    } catch (error) {
+      console.error('Failed to delete purchase:', error)
+    }
+  }
 
   const [date, setDate] = useState<Date | undefined>(purchases.dateOfPurchase)
   const [formData, setFormData] = useState({
@@ -58,7 +63,7 @@ export default function FormEdit({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value
     }))
@@ -66,29 +71,35 @@ export default function FormEdit({
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
-      const newDate = new Date(selectedDate);
-      newDate.setHours(21, 0, 0, 0);
-      setDate(newDate);
-      setFormData(prev => ({
+      const newDate = new Date(selectedDate)
+      newDate.setHours(21, 0, 0, 0)
+      setDate(newDate)
+      setFormData((prev) => ({
         ...prev,
         dateOfPurchase: newDate
-      }));
+      }))
     } else {
-      setDate(undefined);
+      setDate(undefined)
     }
   }
 
   return (
     <div className="container mx-auto p-6 rounded-md shadow-md bg-white max-w-lg">
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        startTransition(() => {
-          const formData = new FormData(e.currentTarget);
-          formAction(formData);
-        });
-      }} className="grid gap-4">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          startTransition(() => {
+            const formData = new FormData(e.currentTarget)
+            formAction(formData)
+          })
+        }}
+        className="grid gap-4"
+      >
         <div className="grid gap-2">
-          <Label htmlFor="responsible" className="text-gray-700 font-semibold text-base">
+          <Label
+            htmlFor="responsible"
+            className="text-gray-700 font-semibold text-base"
+          >
             Responsável pela compra
           </Label>
           <Input
@@ -112,7 +123,10 @@ export default function FormEdit({
           </div>
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="amount" className="text-gray-700 font-semibold text-base">
+          <Label
+            htmlFor="amount"
+            className="text-gray-700 font-semibold text-base"
+          >
             Valor
           </Label>
           <div className="relative">
@@ -143,7 +157,10 @@ export default function FormEdit({
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="description" className="text-gray-700 font-semibold text-base">
+          <Label
+            htmlFor="description"
+            className="text-gray-700 font-semibold text-base"
+          >
             Breve descrição
           </Label>
           <Input
@@ -185,7 +202,9 @@ export default function FormEdit({
                   format(date, 'dd/MM/yyyy')
                 ) : (
                   <span className="text-gray-500">
-                    {purchases.dateOfPurchase ? format(purchases.dateOfPurchase, 'dd/MM/yyyy') : 'Selecione a data da compra'}
+                    {purchases.dateOfPurchase
+                      ? format(purchases.dateOfPurchase, 'dd/MM/yyyy')
+                      : 'Selecione a data da compra'}
                   </span>
                 )}
               </Button>
@@ -223,15 +242,18 @@ export default function FormEdit({
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="installments" className="text-gray-700 font-semibold text-base">
+          <Label
+            htmlFor="installments"
+            className="text-gray-700 font-semibold text-base"
+          >
             Parcelas
           </Label>
           <Select
             onValueChange={(value) => {
-              setFormData(prev => ({
+              setFormData((prev) => ({
                 ...prev,
                 installments: parseInt(value)
-              }));
+              }))
             }}
             name="installments"
             value={formData.installments.toString()}
