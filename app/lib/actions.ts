@@ -73,7 +73,55 @@ export async function createPurchase(
   redirect('/dashboard/compras')
 }
 
-const ITEMS_PER_PAGE = 8
+export async function updatePurchase(
+  id: string,
+  previousState: State, 
+  formData: FormData
+): Promise<State> {
+  const validatedFields = CreatePurchase.safeParse({
+    responsible: formData.get('responsible'),
+    amount: formData.get('amount'),
+    description: formData.get('description'),
+    dateOfPurchase: formData.get('dateOfPurchase'),
+    installments: formData.get('installments')
+  })
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Falha ao atualizar compra'
+    }
+  }
+
+  try {
+    await prisma.purchase.update({
+      where: { id },
+      data: { ...validatedFields.data }
+    })
+  } catch (error) {
+    return {
+      message: `Database error: Falha ao atualizar compra.${error}`
+    }
+  }
+
+  revalidatePath('/dashboard/compras')
+  redirect('/dashboard/compras')
+}
+
+export async function fetchPurchaseById(id: string) {
+  const purchase = await prisma.purchase.findUnique({
+    where: { id }
+  })
+  return purchase
+}
+
+export async function fetchResponsible() {
+  const responsible = await prisma.purchase.findMany({
+    distinct: ['responsible']
+  })
+  return responsible
+}
+
 export async function listPurchase(query: string, currentPage: number) {
   const skip = (currentPage - 1) * ITEMS_PER_PAGE
 
