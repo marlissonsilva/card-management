@@ -26,7 +26,9 @@ export function UpdatePurchase({ id }: { id: string }) {
 }
 
 export function DeletePurchase({ id }: { id: string }) {
-  const deletePurchaseWithId = deletePurchase.bind(null, id)
+  async function deletePurchaseWithId(formData: FormData) {
+    await deletePurchase(id);
+  }
   return (
     <form action={deletePurchaseWithId}>
       <button type="submit" className="rounded-md border p-2 hover:bg-gray-100">

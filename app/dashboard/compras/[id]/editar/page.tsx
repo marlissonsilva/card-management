@@ -1,5 +1,4 @@
 import FormEdit from '@/app/components/edit-form'
-import Form from '@/app/components/form'
 import { fetchPurchaseById, fetchResponsible } from '@/app/lib/actions'
 import { notFound } from 'next/navigation'
 

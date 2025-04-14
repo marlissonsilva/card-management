@@ -20,10 +20,8 @@ import {
   useActionState,
   useState,
   startTransition,
-  SetStateAction
 } from 'react'
-import { createPurchase, State, updatePurchase } from '@/app/lib/actions'
-import formatCurrency from '@/app/lib/utils'
+import { State, updatePurchase } from '@/app/lib/actions'
 import { Calendar } from './ui/calendar'
 import { Button } from './ui/button'
 
@@ -70,7 +68,6 @@ export default function FormEdit({
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
-      // Define o horário como 21:00:00
       const newDate = new Date(selectedDate);
       newDate.setHours(21, 0, 0, 0);
       setDate(newDate);
