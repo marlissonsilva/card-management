@@ -39,7 +39,7 @@ export default function FormEdit({
   purchases,
 }: {
   purchases: Purchase
-  responsible: any[]
+  responsible: string[]
 }) {
   const initialState: State = { message: undefined, errors: {} }
   const updatePurchaseById = updatePurchase.bind(null, purchases.id)
