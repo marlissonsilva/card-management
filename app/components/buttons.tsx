@@ -26,7 +26,7 @@ export function UpdatePurchase({ id }: { id: string }) {
 }
 
 export function DeletePurchase({ id }: { id: string }) {
-  async function deletePurchaseWithId(formData: FormData) {
+  async function deletePurchaseWithId() {
     await deletePurchase(id);
   }
   return (

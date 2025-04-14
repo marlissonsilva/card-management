@@ -37,7 +37,6 @@ interface Purchase {
 
 export default function FormEdit({
   purchases,
-  responsible
 }: {
   purchases: Purchase
   responsible: any[]
@@ -47,7 +46,6 @@ export default function FormEdit({
   const [state, formAction] = useActionState(updatePurchaseById, initialState)
 
   const [date, setDate] = useState<Date | undefined>(purchases.dateOfPurchase)
-  const [selected, setSelected] = useState('')
   const [formData, setFormData] = useState({
     responsible: purchases.responsible,
     amount: purchases.amount,
