@@ -38,7 +38,6 @@ export default function FormEdit({
 }) {
   const initialState: State = { message: undefined, errors: {} }
   const updatePurchaseById = updatePurchase.bind(null, purchases.id)
-  const deletePurchaseWithId = deletePurchase.bind(null, purchases.id)
   const [state, formAction] = useActionState(updatePurchaseById, initialState)
 
   const [date, setDate] = useState<Date | undefined>(purchases.dateOfPurchase)
