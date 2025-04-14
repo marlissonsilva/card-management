@@ -41,15 +41,6 @@ export default function FormEdit({
   const deletePurchaseWithId = deletePurchase.bind(null, purchases.id)
   const [state, formAction] = useActionState(updatePurchaseById, initialState)
 
-  const handleDelete = async () => {
-    try {
-      await deletePurchaseWithId()
-      window.location.href = '/dashboard/compras'
-    } catch (error) {
-      console.error('Failed to delete purchase:', error)
-    }
-  }
-
   const [date, setDate] = useState<Date | undefined>(purchases.dateOfPurchase)
   const [formData, setFormData] = useState({
     responsible: purchases.responsible,
