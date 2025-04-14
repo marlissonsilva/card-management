@@ -17,7 +17,7 @@ import {
   SelectItem
 } from '@/app/components/ui/select'
 import { useActionState, useState, startTransition } from 'react'
-import { State, updatePurchase, deletePurchase } from '@/app/lib/actions'
+import { State, updatePurchase } from '@/app/lib/actions'
 import { Calendar } from './ui/calendar'
 import { Button } from './ui/button'
 
