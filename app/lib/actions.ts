@@ -116,8 +116,8 @@ export async function fetchPurchasePages(query: string) {
     return totalPages
   } catch (error) {
     console.error('Database Error:', error)
-    throw new Error('Failed to fetch total number of invoices.')
   }
+  revalidatePath('/dashboard/compras')
 }
 
 export async function getResponsibles() {
@@ -172,6 +172,6 @@ export async function fetchCardData() {
     }
   } catch (error) {
     console.error('Database Error:', error)
-    throw new Error('Failed to fetch card data.')
   }
+  revalidatePath('/dashboard/compras')
 }
