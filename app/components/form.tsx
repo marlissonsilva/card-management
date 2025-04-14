@@ -39,25 +39,25 @@ export default function Form() {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
 
-    // Formatar valores antes de enviar
     const rawAmount = formData.get('amount') as string
     const formattedAmount =
       parseFloat(rawAmount.replace(/\./g, '').replace(',', '.')) || 0
 
     const rawDate = formData.get('dateOfPurchase') as string
-    const formattedDate = rawDate ? new Date(rawDate).toISOString() : null
+    const date = new Date(rawDate)
+    date.setHours(21, 0, 0, 0)
+    const formattedDate = date.toISOString()
 
     const rawInstallments = formData.get('installments') as string
     const formattedInstallments = Number(rawInstallments) || 0
 
-    // Criar um novo FormData e adicionar os valores formatados
     const formattedFormData = new FormData()
     formData.forEach((value, key) => {
       formattedFormData.append(key, value)
     })
 
     formattedFormData.set('amount', formattedAmount.toString())
-    formattedFormData.set('dateOfPurchase', formattedDate || '')
+    formattedFormData.set('dateOfPurchase', formattedDate)
     formattedFormData.set('installments', formattedInstallments.toString())
 
     startTransition(() => {
@@ -74,11 +74,14 @@ export default function Form() {
     <div className="container mx-auto p-6 rounded-md shadow-md bg-white max-w-lg">
       <form onSubmit={handleSubmit} className="grid gap-4">
         <div className="grid gap-2">
-          <Label htmlFor="responsible" className="text-gray-700 font-semibold">
+          <Label
+            htmlFor="responsible"
+            className="text-gray-700 font-semibold text-base"
+          >
             Responsável pela compra
           </Label>
           <Input
-            className="border rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-300"
+            className="border rounded-md py-5 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-300"
             id="responsible"
             name="responsible"
             placeholder="Ex: Fulano da Silva"
@@ -96,7 +99,10 @@ export default function Form() {
           </div>
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="amount" className="text-gray-700 font-semibold">
+          <Label
+            htmlFor="amount"
+            className="text-gray-700 font-semibold text-base"
+          >
             Valor
           </Label>
           <div className="relative">
@@ -105,7 +111,7 @@ export default function Form() {
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
             />
             <Input
-              className="border rounded-md py-2 pl-8 pr-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-300"
+              className="border rounded-md py-5 pl-8 pr-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-300"
               id="amount"
               name="amount"
               value={displayAmount}
@@ -127,11 +133,14 @@ export default function Form() {
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="description" className="text-gray-700 font-semibold">
+          <Label
+            htmlFor="description"
+            className="text-gray-700 font-semibold text-base"
+          >
             Breve descrição
           </Label>
           <Input
-            className="border rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-300"
+            className="border rounded-md py-5 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-300"
             id="description"
             name="description"
             placeholder="Descrição da compra..."
@@ -152,7 +161,7 @@ export default function Form() {
         <div className="grid gap-2">
           <Label
             htmlFor="dateOfPurchase"
-            className="text-gray-700 font-semibold"
+            className="text-gray-700 font-semibold text-base"
           >
             Data da compra
           </Label>
@@ -160,7 +169,7 @@ export default function Form() {
             <PopoverTrigger asChild id="dateOfPurchase" name="dateOfPurchase">
               <Button
                 variant={'outline'}
-                className="w-full flex items-center justify-start gap-2 border rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-300"
+                className="w-full flex items-center justify-start gap-2 border rounded-md py-5 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-300"
               >
                 <IconCalendar className="text-gray-500" />
                 {date ? (
@@ -181,13 +190,14 @@ export default function Form() {
                 selected={date}
                 onSelect={setDate}
                 initialFocus
+                toDate={new Date()}
               />
             </PopoverContent>
           </Popover>
           <input
             type="hidden"
             name="dateOfPurchase"
-            value={date ? format(date, 'yyyy-MM-dd') : ''}
+            value={date ? format(date, 'yyyy-MM-dd') + 'T00:00:00' : ''}
           />
           <div
             className="text-red-500 text-sm mt-1"
@@ -203,7 +213,10 @@ export default function Form() {
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="installments" className="text-gray-700 font-semibold">
+          <Label
+            htmlFor="installments"
+            className="text-gray-700 font-semibold text-base"
+          >
             Parcelas
           </Label>
           <Select
@@ -213,7 +226,7 @@ export default function Form() {
             name="installments"
           >
             <SelectTrigger
-              className="w-full border rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-300 flex items-center justify-between"
+              className="w-full border rounded-md py-5 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-300 flex items-center justify-between"
               id="installments"
             >
               <SelectValue placeholder="Selecione o número de parcelas">

@@ -12,7 +12,7 @@ export default async function Table({
   currentPage: number
 }) {
   const purchases = await listPurchase(query, currentPage)
-
+  
   if (!purchases || purchases.length === 0) {
     return <NoData />
   }
@@ -96,7 +96,7 @@ export default async function Table({
                     {formatCurrency(purchase.amount)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {String(purchase.dateOfPurchase).slice(0, 16)}
+                    {formatDateToLocal(purchase.dateOfPurchase)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <span className="flex gap-2 items-center">

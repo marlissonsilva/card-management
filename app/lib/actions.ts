@@ -36,6 +36,7 @@ export type State = {
 }
 
 const CreatePurchase = FormSchema.omit({ id: true })
+const ITEMS_PER_PAGE = 8
 
 export async function createPurchase(
   state: State,
@@ -204,12 +205,17 @@ export async function getResponsibles() {
 }
 
 export async function deletePurchase(id: string) {
-  prisma.purchase.delete({
-    where: {
-      id
-    }
-  })
-  revalidatePath('/dashboard/compras')
+  try {
+    await prisma.purchase.delete({
+      where: {
+        id
+      }
+    })
+    revalidatePath('/dashboard/compras')
+    return { message: 'Compra deletada com sucesso' }
+  } catch (error) {
+    return { message: `Database error: Falha ao deletar compra. ${error}` }
+  }
 }
 
 export async function fetchCardData() {

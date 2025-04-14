@@ -20,8 +20,7 @@ export default async function Page(props: {
   const query = searchParams?.query || ''
   const currentPage = Number(searchParams?.page) || 1
   const data = await fetchPurchasePages(query)
-  if(!data) return null
-  const totalPages = data
+  const totalPages = data || 0
 
   return (
     <div className="w-full">
